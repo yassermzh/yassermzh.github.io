@@ -17,8 +17,27 @@ require([
         {
             id: 2,
             name: "John",
-            desc: "This is a description",
+            desc: "This is a description 2",
             isShy: false
+        },
+        {
+            id: 3,
+            name: "John2",
+            desc: "This is a description 3",
+            isShy: true
+        },
+        {
+            id: 4,
+            name: "John3",
+            desc: "This is a description 4",
+            isShy: true
+        },
+        {
+            id: 5,
+            name: "John4",
+            desc: "This is a description 5",
+            isShy: false,
+            isRude: true
         }
     ];
 
@@ -36,7 +55,7 @@ require([
     //     //{name: 'yasser'},
     //     persons[0],
     //     dom.byId('persons'));
-        //personWidget.startup();
+    //personWidget.startup();
 
     // var person = new Person({id: 1, name: 'yasser'});
 

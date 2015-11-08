@@ -3,23 +3,21 @@ define([
     "dojo/_base/declare", "dojo/parser", "dojo/ready", "dijit/registry",
     'dojo/_base/array',
     'dojo/dom', "dojo/dom-construct",
-    "dijit/_Widget", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", //"dijit/_WidgetsInTemplateMixin",
     "/widgets/person-widget.js",
     "dojo/text!/widgets/templates/person-list.html",
-    "dijit/form/Button",
-    "../person.js"
+    "dijit/form/Button"
 ], function(declare, parser, ready, registry,
             array,
             dom, domConstruct,
-            _Widget, _TemplatedMixin, _WidgetsInTemplateMixin,
+            _Widget, _TemplatedMixin, //_WidgetsInTemplateMixin,
             PersonWidget,
             template,
-            Button,
-            Person) {
+            Button) {
 
-    return declare("PersonListWidget", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Person], {
-        // put methods, attributes, etc. here
-        //templateString: "<div><span data-dojo-attach-point='nameNode'></span></div>",
+    return declare("PersonListWidget", [
+    _Widget, _TemplatedMixin, //_WidgetsInTemplateMixin
+    ], {
         templateString: template,
 
         constructor: function(params, srcNodeRef){
@@ -27,51 +25,47 @@ define([
             console.log("creating persons list ");
         },
 
-        // Attributes
-        name: "unknown",
-        //_setNameAttr: { node: "nameNode", type: "innerHTML" }
         popup: function(){
             window.alert('Name='+ this.whatIsYourName());
         },
 
-        remove: function() {
-            this.destroy();
-        },
-
         postCreate: function() {
 
-            window.registry = registry;
-
             var list = this.domNode;
+
+            function removePerson() {
+                console.log('remove button clicked');
+                //personWidget.destroyRendering(false);
+                personWidget.domNode.remove();
+                personWidget.destroyRecursive(false);
+            }
+
+            // populate persons
             array.forEach(this.persons, function(person){
-                console.log(person);
-                // var node = domConstruct.create('div', {} ,
-                //                                dom.byId('list'), 'after');
-                // var widget = new PersonWidget(person, node);
                 var personWidget = new PersonWidget(person);
                 personWidget.placeAt(list);
                 personWidget.startup();
                 new Button({
                     label: 'remove',
-                    onClick: function() {
-                        console.log('remove button clicked');
-                        //personWidget.destroyRendering(false);
-                        personWidget.domNode.remove();
-                        personWidget.destroyRecursive(false);
-                    }
+                    onClick: removePerson
                 }).placeAt(personWidget).startup();
             });
 
-            // array.forEach(persons, function(person, id){
-            //     console.log(person, id);
-            //     var node = domConstruct.create('div', {}, dom.byId('list'), 'after');
-            //     var widget = new PersonWidget(person, node);
-            //     // var widget = new PersonWidget(person);
-            //     // var list= dom.byId('persons0');
-            //     // widget.startup();
-            //     // domConstruct.place(widget, list);
+            // list all shy people
+            var shyPersonNames = array
+                    .filter(this.persons, function(person){
+                        return person.isShy;
+                    })
+                    .map(function(person){
+                        return person.name;
+                    })
+                    .join(', ');
 
-            // });
+            domConstruct.create('p', {
+                innerHTML: shyPersonNames
+            }, list, 'after');
+
+            window.registry = registry;
 
         }
 
