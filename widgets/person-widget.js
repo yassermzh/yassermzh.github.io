@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 define([
     "dojo/_base/declare", "dojo/parser", "dojo/ready", 'dojo/_base/lang',
@@ -32,9 +32,10 @@ define([
             window.alert('Name='+ this.whatIsYourName());
         },
 
-        remove: function() {
-            this.destroy();
-        }
+        // destroy: function() {
+        //     console.log('person-widget destroy get called');
+        //     this.inherited(arguments);
+        // }
 
     });
     ready(function(){
