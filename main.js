@@ -1,5 +1,3 @@
-'use strict';
-
 require([
     'dojo/dom',
     'dojo/dom-construct',
@@ -27,7 +25,7 @@ require([
 
     var personWidget = new PersonListWidget(
         persons,
-        dom.byId('list'));
+        dom.byId('mypersonslistwidget'));
     personWidget.startup();
 
     // persons = array.map(persons, function(person){

@@ -4,6 +4,7 @@ define([
     'dojo/_base/array',
     'dojo/dom', "dojo/dom-construct",
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
+    "/widgets/person-widget.js",
     "dojo/text!/widgets/templates/person-list.html",
     "dijit/form/Button",
     "../person.js"
@@ -11,11 +12,12 @@ define([
             array,
             dom, domConstruct,
             _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
+            PersonWidget,
             template,
             Button,
             Person) {
 
-    return declare("PersonWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Person], {
+    return declare("PersonListWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Person], {
         // put methods, attributes, etc. here
         //templateString: "<div><span data-dojo-attach-point='nameNode'></span></div>",
         templateString: template,
@@ -38,11 +40,13 @@ define([
 
         postCreate: function() {
 
+            var list = this.domNode;
             array.forEach(this.persons, function(person){
                 console.log(person);
-                var node = domConstruct.create('div', {},
-                                               dom.byId('list'), 'after');
-                var widget = new PersonWidget(person, node);
+                // var node = domConstruct.create('div', {} ,
+                //                                dom.byId('list'), 'after');
+                // var widget = new PersonWidget(person, node);
+                new PersonWidget(person).placeAt(list);
             });
 
             // array.forEach(persons, function(person, id){
