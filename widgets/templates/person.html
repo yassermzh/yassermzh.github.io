@@ -1,3 +1,17 @@
-<div>
-    <span data-dojo-attach-point='name'></span>
-</div>
+<tr>
+    <!-- <span data-dojo-attach-point='nameNode'></span> -->
+    <td><span>${id}</span></td>
+    <td>
+        <span>${name}</span>
+        <button type="button"
+                data-dojo-attach-event='onclick: popup'
+                data-dojo-type="dijit/form/Button">
+            what?
+        </button>
+        <!-- <button type="button"
+        data-dojo-attach-event='onclick: remove'
+        data-dojo-type="dijit/form/Button">
+        remove
+        </button> -->
+    </td>
+</tr>
