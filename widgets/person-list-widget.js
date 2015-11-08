@@ -1,22 +1,22 @@
 'use strict';
 define([
-    "dojo/_base/declare", "dojo/parser", "dojo/ready", "dijit/registry",
+    "dojo/_base/declare", "dojo/_base/lang", "dojo/parser", "dojo/ready", "dijit/registry",
     'dojo/_base/array',
     'dojo/dom', "dojo/dom-construct",
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", //"dijit/_WidgetsInTemplateMixin",
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
     "/widgets/person-widget.js",
     "dojo/text!/widgets/templates/person-list.html",
     "dijit/form/Button"
-], function(declare, parser, ready, registry,
+], function(declare, lang, parser, ready, registry,
             array,
             dom, domConstruct,
-            _Widget, _TemplatedMixin, //_WidgetsInTemplateMixin,
+            _Widget, _TemplatedMixin, _WidgetsInTemplateMixin,
             PersonWidget,
             template,
             Button) {
 
     return declare("PersonListWidget", [
-    _Widget, _TemplatedMixin, //_WidgetsInTemplateMixin
+        _Widget, _TemplatedMixin, _WidgetsInTemplateMixin
     ], {
         templateString: template,
 
@@ -25,34 +25,9 @@ define([
             console.log("creating persons list ");
         },
 
-        popup: function(){
-            window.alert('Name='+ this.whatIsYourName());
-        },
-
-        postCreate: function() {
-
-            var list = this.domNode;
-
-            function removePerson() {
-                console.log('remove button clicked');
-                //personWidget.destroyRendering(false);
-                personWidget.domNode.remove();
-                personWidget.destroyRecursive(false);
-            }
-
-            // populate persons
-            array.forEach(this.persons, function(person){
-                var personWidget = new PersonWidget(person);
-                personWidget.placeAt(list);
-                personWidget.startup();
-                new Button({
-                    label: 'remove',
-                    onClick: removePerson
-                }).placeAt(personWidget).startup();
-            });
-
-            // list all shy people
-            var shyPersonNames = array
+        // list all shy people
+        listShyPeople: function() {
+            var shyPeopleNames = array
                     .filter(this.persons, function(person){
                         return person.isShy;
                     })
@@ -61,13 +36,45 @@ define([
                     })
                     .join(', ');
 
-            domConstruct.create('p', {
-                innerHTML: shyPersonNames
-            }, list, 'after');
+            this.shyPeopleNode.innerHTML = shyPeopleNames;
+        },
 
+        postCreate: function() {
+
+            var allPeopleNode = this.allPeopleNode;
+            function removeWidget(w) {
+                console.log('remove button clicked');
+                //personWidget.destroyRendering(false);
+                w.domNode.remove();
+                w.destroyRecursive(false);
+                var wId = w.get('id');
+                this.persons = array.filter(this.persons, function(person) {
+                    return person.id != wId;
+                });
+                this.listShyPeople();
+
+            }
+            var self = this;
+            // populate persons
+            array.forEach(this.persons, function(person){
+                var personWidget = new PersonWidget(person);
+                personWidget.placeAt(allPeopleNode);
+                personWidget.startup();
+
+                new Button({
+                    label: 'remove',
+                    onClick: function() {
+                    //removeWidget.call(self, personWidget);
+                        lang.hitch(self, removeWidget)(personWidget);
+                    }
+                }).placeAt(personWidget).startup();
+            });
+
+            this.listShyPeople();
             window.registry = registry;
 
         }
+
 
     });
     ready(function(){
