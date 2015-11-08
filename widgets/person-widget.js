@@ -32,6 +32,11 @@ define([
             window.alert('Name='+ this.whatIsYourName());
         },
 
+        postCreate: function() {
+            if (this.isShy) {
+                this.domNode.className = "shy";
+            }
+        }
         // destroy: function() {
         //     console.log('person-widget destroy get called');
         //     this.inherited(arguments);
