@@ -3,7 +3,7 @@
 define([
     "dojo/_base/declare", "dojo/parser", "dojo/ready", 'dojo/_base/lang', 'dojo/on',
     'dojo/dom-style', 'dojo/dom-class',
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", // "dijit/_WidgetsInTemplateMixin",
     "dojo/text!/widgets/templates/person.html",
     "dijit/form/Button", "dijit/Dialog", "dijit/form/TextBox",
     //"dijit/_OnDijitClickMixin",
@@ -12,7 +12,7 @@ define([
 ], function(
     declare, parser, ready, lang, on,
     domStyle, domClass,
-    _Widget, _TemplatedMixin, _WidgetsInTemplateMixin,
+    _Widget, _TemplatedMixin, // _WidgetsInTemplateMixin,
     template,
     Button, Dialog, TextBox,
     //_OnDijitClickMixin,
@@ -23,14 +23,14 @@ define([
         _Widget
         //,_OnDijitClickMixin
         ,_TemplatedMixin
-        , _WidgetsInTemplateMixin
+        // , _WidgetsInTemplateMixin
     ], {
 
         templateString: template,
         _editButtonState: 'edit',
 
-        nameField: 'unknown',
-        _setNameFieldAttr: {node: "nameNode", type: "innerHTML"},
+        name: 'unknown',
+        _setNameAttr: {node: "nameNode", type: "innerHTML"},
 
         nameEditClass: "editHide",
         _setNameEditClassAttr: { node: "editNameNode", type: "class" },
@@ -56,17 +56,11 @@ define([
         },
 
         editHandler: function() {
-            //new TextBox();
             console.log('edit');
-            //domStyle.set(this.nameInputNode, "display", "inline");
-            console.log('display=', domStyle.get(this.editNameNode, "display"));
-            //this.nameInputNode.style = "display:inline;";
-            //this.set('nameEditClass', "editShow");
             this.set('nameEditClass', 'showHide');
             this.editButtonNode.set('label', 'save');
             this._editButtonState = 'save';
             this.editNameNode.focus();
-            //domClass.remove(this.editNameNode, 'editHide');
             domClass.remove(this.cancelButtonNode, 'editHide');
         },
 
@@ -74,7 +68,7 @@ define([
             if (this.validate()) {
                 return;
             }
-            this.set('nameField', this.editNameNode.value);
+            this.set('name', this.editNameNode.value);
             this.cancelHandler();
         },
 
@@ -88,9 +82,12 @@ define([
             }
         },
 
-        nameChangeHandler: function() {
+        nameChangeHandler: function(e) {
             console.log('new name=', this.editNameNode.value);
             this.messageNode.innerHTML = this.validate();
+            if (e.keyCode == 13) {
+                this.saveHandler();
+            }
         },
 
         cancelHandler: function() {
@@ -105,7 +102,7 @@ define([
                 //this.domNode.className = "shy";
                 domClass.add(this.domNode, 'shy');
             }
-            this.set('nameField', this.name);
+            //this.set('nameField', this.name);
             this.set('nameEditClass', 'editHide');
             domClass.add(this.cancelButtonNode, 'editHide');
             //domClass.add(this.editNameNode, 'editHide');
@@ -125,6 +122,10 @@ define([
                 window.personWidget = this;
             }
 
+        },
+
+        remove: function() {
+            console.log('remove');
         },
 
         startup: function() {
