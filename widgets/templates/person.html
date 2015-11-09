@@ -2,16 +2,40 @@
     <!-- <span data-dojo-attach-point='nameNode'></span> -->
     <td><span>${id}</span> </td>
     <td>
-        <span>${name}</span>
+
+        <!-- name -->
+        <span data-dojo-attach-point="nameNode"></span>
         <button type="button"
                 data-dojo-attach-point="whatNode"
                 data-dojo-type="dijit/form/Button">
             what?
         </button>
+
+        <!-- edit name -->
+        <input type="text"
+               data-dojo-attach-point="editNameNode">
+        <span data-dojo-attach-point="messageNode"></span>
+
+        o<!-- <input type="text" class="editHide" -->
+        <!--        data-dojo-attach-point="nameNode" -->
+        <!--        data-dojo-type="dijit/form/TextBox" -->
+        <!--        data-dojo-props="trim:true, propercase:true" idd="nameTextBox"> -->
+
+        <!-- actions -->
+        <button type="button"
+                data-dojo-attach-point="editButtonNode"
+                data-dojo-type="dijit/form/Button">
+            edit
+        </button>
+        <button type="button"
+                data-dojo-attach-point="cancelButtonNode"
+                data-dojo-typee="dijit/form/Button">
+            cancel
+        </button>
         <!-- <button type="button"
-        data-dojo-attach-event='onclick: remove'
-        data-dojo-type="dijit/form/Button">
-        remove
-        </button> -->
+             data-dojo-attach-event='onclick: remove'
+             data-dojo-type="dijit/form/Button">
+             remove
+             </button> -->
     </td>
 </tr>

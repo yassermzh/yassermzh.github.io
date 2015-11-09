@@ -16,7 +16,9 @@ define([
             Button) {
 
     return declare("PersonListWidget", [
-        _Widget, _TemplatedMixin, _WidgetsInTemplateMixin
+        _Widget,
+        _TemplatedMixin,
+        _WidgetsInTemplateMixin
     ], {
         templateString: template,
 
