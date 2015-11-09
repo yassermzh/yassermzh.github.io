@@ -44,6 +44,7 @@ define([
         postCreate: function() {
 
             var allPeopleNode = this.allPeopleNode;
+
             function removeWidget(w) {
                 console.log('remove button clicked');
                 //personWidget.destroyRendering(false);
@@ -59,14 +60,17 @@ define([
             var self = this;
             // populate persons
             array.forEach(this.persons, function(person){
-                var personWidget = new PersonWidget(person);
+                var personWidget = new PersonWidget({
+                    person: person,
+                    mixin: {removeWidget: lang.hitch(self,removeWidget)}
+                });
                 personWidget.placeAt(allPeopleNode);
                 personWidget.startup();
 
                 new Button({
                     label: 'remove',
                     onClick: function() {
-                    //removeWidget.call(self, personWidget);
+                        //removeWidget.call(self, personWidget);
                         lang.hitch(self, removeWidget)(personWidget);
                     }
                 }).placeAt(personWidget).startup();

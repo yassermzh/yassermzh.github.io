@@ -5,31 +5,23 @@
 
         <!-- name -->
         <span data-dojo-attach-point="nameNode"></span>
+        <!-- edit name -->
+        <button type="button"
+                data-dojo-attach-point="editButtonNode"
+                data-dojo-attach-event='onClick: editHandler'
+                data-dojo-type="dijit/form/Button">
+            edit
+        </button>
+
+        <!-- what -->
         <button type="button"
                 data-dojo-attach-point="whatNode"
                 data-dojo-type="dijit/form/Button">
             what?
         </button>
 
-        <!-- edit name -->
-        <input type="text"
-               data-dojo-attach-point="editNameNode">
-        <span data-dojo-attach-point="messageNode"></span>
-
-        <!-- actions -->
         <button type="button"
-                data-dojo-attach-point="editButtonNode"
-                data-dojo-type="dijit/form/Button">
-            edit
-        </button>
-        <button type="button"
-                data-dojo-attach-point="cancelButtonNode"
-                data-dojo-typee="dijit/form/Button">
-            cancel
-        </button>
-
-        <button type="button"
-                data-dojo-attach-event='onclick: remove'
+                data-dojo-attach-event='onClick: remove'
                 data-dojo-type="dijit/form/Button">
             remove
         </button>

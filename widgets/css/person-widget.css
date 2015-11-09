@@ -2,10 +2,6 @@
     color: red;
 }
 
-.editHide {
-    display: none !important; 
-}
-
-.editShow {
-    display: inline;
+.hide {
+  display: none;
 }

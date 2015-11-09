@@ -2,8 +2,8 @@
 
 define([
     "dojo/_base/declare", "dojo/parser", "dojo/ready", 'dojo/_base/lang', 'dojo/on',
-    'dojo/dom-style', 'dojo/dom-class',
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", // "dijit/_WidgetsInTemplateMixin",
+    'dojo/dom-style', 'dojo/dom-class', 'dojo/dom-construct',
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
     "dojo/text!/widgets/templates/person.html",
     "dijit/form/Button", "dijit/Dialog", "dijit/form/TextBox",
     //"dijit/_OnDijitClickMixin",
@@ -11,8 +11,8 @@ define([
     "../person-rude.js"
 ], function(
     declare, parser, ready, lang, on,
-    domStyle, domClass,
-    _Widget, _TemplatedMixin, // _WidgetsInTemplateMixin,
+    domStyle, domClass, domConstruct,
+    _Widget, _TemplatedMixin, _WidgetsInTemplateMixin,
     template,
     Button, Dialog, TextBox,
     //_OnDijitClickMixin,
@@ -23,7 +23,7 @@ define([
         _Widget
         //,_OnDijitClickMixin
         ,_TemplatedMixin
-        // , _WidgetsInTemplateMixin
+        , _WidgetsInTemplateMixin
     ], {
 
         templateString: template,
@@ -32,18 +32,23 @@ define([
         name: 'unknown',
         _setNameAttr: {node: "nameNode", type: "innerHTML"},
 
-        nameEditClass: "editHide",
-        _setNameEditClassAttr: { node: "editNameNode", type: "class" },
+        // nameEditClass: "hide",
+        // _setNameEditClassAttr: { node: "editNameNode", type: "class" },
+
+        // cancelButtonClass: "hide",
+        // _setCancelButtonClassAttr: { node: "cancelButtonNode", type: "class" },
 
         constructor: function(params, srcNodeRef){
 
-            var person;
-            if (params.isRude) {
-                person = new PersonRude(params);
+            var person = params.person;
+            var mixin = params.mixin;
+            if (person.isRude) {
+                person = new PersonRude(person);
             } else {
-                person = new Person(params);
+                person = new Person(person);
             }
             lang.mixin(this, person);
+            lang.mixin(this, mixin);
         },
 
         popup: function(){
@@ -55,82 +60,88 @@ define([
             }).show();
         },
 
+        cancelButton: null,
+        nameTextBox: null,
+
         editHandler: function() {
-            console.log('edit');
-            this.set('nameEditClass', 'showHide');
-            this.editButtonNode.set('label', 'save');
-            this._editButtonState = 'save';
-            this.editNameNode.focus();
-            domClass.remove(this.cancelButtonNode, 'editHide');
+
+            if (this._editButtonState == 'edit') {
+                domClass.add(this.nameNode, 'hide');
+                this.nameTextBox = new TextBox({
+                    value: this.name,
+                    placeHolder: 'name...'
+                });
+                this.nameTextBox.placeAt(this.nameNode, 'after');
+                this.messageBox = domConstruct.toDom('<span></span>');
+
+                domConstruct.place(this.messageBox, this.nameTextBox.domNode, 'after');
+                on(this.nameTextBox, 'keyup', lang.hitch(this, this.nameChangeHandler));
+
+                this.cancelButton = new Button({
+                    label: 'cancel',
+                    onClick: lang.hitch(this, this.cancelHandler)
+                });
+                this.cancelButton.startup();
+                this.cancelButton.placeAt(this.messageBox, 'after');
+                this.editButtonNode.set('label', 'save');
+                this._editButtonState = 'save';
+                this.nameTextBox.focus();
+            } else {
+                this.saveHandler();
+            }
+
         },
 
-        saveHandler: function(){
-            if (this.validate()) {
-                return;
+        validate: function() {
+            var name = this.nameTextBox.get('value');
+            if (name.length>5) {
+                return {message: 'too long!', hasError: true};
+            } else if (name.length<4) {
+                return {message: 'too short!', hasError: true};
+            } else {
+                return {message: '', hasError: false};
             }
-            this.set('name', this.editNameNode.value);
+        },
+
+        saveHandler: function() {
+            if (this.validate().hasError) return;
+            this.set('name', this.nameTextBox.get('value'));
             this.cancelHandler();
         },
 
-        validate: function () {
-            if (this.editNameNode.value.length>5) {
-                return 'too Long!';
-            } else if (this.editNameNode.value.length<4) {
-                return 'too short';
-            } else {
-                return '';
-            }
-        },
-
         nameChangeHandler: function(e) {
-            console.log('new name=', this.editNameNode.value);
-            this.messageNode.innerHTML = this.validate();
+            this.messageBox.innerHTML = this.validate().message;
             if (e.keyCode == 13) {
                 this.saveHandler();
             }
         },
 
         cancelHandler: function() {
-            this.set('nameEditClass', 'editHide');
-            this.editButtonNode.set('label', 'edit');
-            domClass.add(this.cancelButtonNode, 'editHide');
+            console.log('cancel clicked');
+            domClass.remove(this.nameNode, 'hide');
             this._editButtonState = 'edit';
+            this.editButtonNode.set('label', 'edit');
+            this.nameTextBox.destroy();
+            this.cancelButton.destroy();
+            this.messageBox.remove();
         },
 
         postCreate: function() {
             if (this.isShy) {
-                //this.domNode.className = "shy";
                 domClass.add(this.domNode, 'shy');
             }
-            //this.set('nameField', this.name);
-            this.set('nameEditClass', 'editHide');
-            domClass.add(this.cancelButtonNode, 'editHide');
-            //domClass.add(this.editNameNode, 'editHide');
-
             on(this.whatNode, 'click', lang.hitch(this, this.popup));
-            on(this.editButtonNode, 'click', function() {
-                if (this._editButtonState == 'edit') {
-                    lang.hitch(this, this.editHandler)();
-                } else {
-                    lang.hitch(this, this.saveHandler)();
-                }
-            }.bind(this));
-            on(this.cancelButtonNode, 'click', lang.hitch(this, this.cancelHandler));
-            on(this.editNameNode, 'keyup', lang.hitch(this, this.nameChangeHandler));
-
-            if(this.id ==1 ) {
-                window.personWidget = this;
-            }
-
         },
 
         remove: function() {
             console.log('remove');
+            // this.domNode.remove();
+            // this.destroyRecursive(false);
+            this.removeWidget(this);
         },
 
         startup: function() {
             console.log("startup callled");
-
         }
 
         // destroy: function() {
