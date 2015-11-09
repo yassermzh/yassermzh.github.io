@@ -80,7 +80,7 @@ define([
 
         validate: function () {
             if (this.editNameNode.value.length>5) {
-                return 'name too Long!';
+                return 'too Long!';
             } else if (this.editNameNode.value.length<4) {
                 return 'too short';
             } else {
