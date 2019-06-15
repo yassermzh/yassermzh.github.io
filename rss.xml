@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[My Notes]]></title><description><![CDATA[Random topics about programming.]]></description><link>https:/mintice/blog</link><generator>RSS for Node</generator><lastBuildDate>Fri, 14 Jun 2019 21:42:50 GMT</lastBuildDate><item><title><![CDATA[Toggle buttons as filter using RxJS]]></title><description><![CDATA[A friend at work was trying to find a use-case for RxJS in the admin panel.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[My Notes]]></title><description><![CDATA[Random topics about programming.]]></description><link>https:/mintice/blog</link><generator>RSS for Node</generator><lastBuildDate>Sat, 15 Jun 2019 12:09:51 GMT</lastBuildDate><item><title><![CDATA[Toggle buttons as filter using RxJS]]></title><description><![CDATA[A friend at work was trying to find a use-case for RxJS in the admin panel.
 He came up with filtering buttons on a chart that act as toggle…]]></description><link>https:/mintice/blog/rx-toggle-buttons/</link><guid isPermaLink="false">https:/mintice/blog/rx-toggle-buttons/</guid><pubDate>Fri, 25 Jan 2019 11:55:23 GMT</pubDate><content:encoded>&lt;p&gt;A friend at work was trying to find a use-case for RxJS in the admin panel.
 He came up with filtering buttons on a chart that act as toggle buttons. So
 that clicking once the buttons 2 and 1,
@@ -67,4 +67,43 @@ cold observables. There are three streams: buttons 1, 2, and the result streams.
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; hot &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;multicast&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;cold&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; hot&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item></channel></rss>
+&lt;span class=&quot;token keyword&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; hot&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Deploy Lerna monorepo using Jenkins]]></title><description><![CDATA[Deploy a Monorepo with Jenkins and Gitlab webhooksThe monorepo is managed by Lerna.As you push to Gitlab, it triggers a Jenkins job.This job…]]></description><link>https:/mintice/blog/deploy-monorepo/</link><guid isPermaLink="false">https:/mintice/blog/deploy-monorepo/</guid><pubDate>Sun, 25 Nov 2018 10:21:10 GMT</pubDate><content:encoded>&lt;h1&gt;Deploy a Monorepo with Jenkins and Gitlab webhooks&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;The monorepo is managed by &lt;a href=&quot;https://github.com/lerna/lerna&quot;&gt;Lerna&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;As you push to Gitlab, it triggers a Jenkins job.&lt;/li&gt;
+&lt;li&gt;This job checkouts the repository, and loads the &lt;code class=&quot;language-text&quot;&gt;tasks&lt;/code&gt; package Jenkinsfile at: &lt;code class=&quot;language-text&quot;&gt;packages/tasks/Jenkinsfile&lt;/code&gt;. There we list all deployable packages. Mostly the packages are not deployable and used as dependencies.&lt;/li&gt;
+&lt;li&gt;Each deployable package has one Jenkinsfile at &lt;code class=&quot;language-text&quot;&gt;packages/PACKAGE/scripts/Jenkinsfile&lt;/code&gt; that knows how to deploy itself.&lt;/li&gt;
+&lt;li&gt;The &lt;code class=&quot;language-text&quot;&gt;tasks&lt;/code&gt; package Jenkinsfile compares this commit with last successful deploy and find all changed packages and only load Jenkisnfile of those packages.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The structure of the monorepo is as follows:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;  |
+  |-- packages/
+  |           /tasks/Jenkinsfile
+  |           /notify/
+  |                  /scripts/Jenkinsfile
+  |           /email/&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;in which the &lt;code class=&quot;language-text&quot;&gt;notify&lt;/code&gt; package is a deployable one, and &lt;code class=&quot;language-text&quot;&gt;email&lt;/code&gt; package is a dependency for &lt;code class=&quot;language-text&quot;&gt;notify&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Development flow&lt;/h2&gt;
+&lt;h3&gt;To run locally&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;install dependencies&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;lerna bootstrap --hoist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;add dependencies
+Here adding &lt;code class=&quot;language-text&quot;&gt;@company/email&lt;/code&gt; to &lt;code class=&quot;language-text&quot;&gt;@company/notify&lt;/code&gt;. As you notice, we use &lt;code class=&quot;language-text&quot;&gt;@company&lt;/code&gt; to scope npm packages.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;lerna &lt;span class=&quot;token function&quot;&gt;add&lt;/span&gt; @company/email --scope @company/notify&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;run only one package&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;cd&lt;/span&gt; packages/notify
+&lt;span class=&quot;token function&quot;&gt;npm&lt;/span&gt; start&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;run all packages&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;lerna run start&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;To deploy&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;lerna publish --registry http://registry.company.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item></channel></rss>
